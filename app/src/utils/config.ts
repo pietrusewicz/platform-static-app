@@ -1,1 +1,1 @@
-export const ENTRYPOINT = import.meta.env.PUBLIC_ENTRYPOINT || "http://php:80";
+export const ENTRYPOINT = typeof window === "undefined" ? process.env.API_PUBLIC_ENTRYPOINT : window.origin;

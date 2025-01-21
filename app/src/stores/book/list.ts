@@ -23,15 +23,15 @@ export const useBookListStore = defineStore("bookList", {
       this.toggleLoading();
 
       try {
-        const path = page ? `/admin/books?page=${page}` : "/admin/books";
+        const path = page ? `/books?page=${page}` : "/books";
         const response = await api(path);
         const data: PagedCollection<Book> = await response.json();
         const hubUrl = extractHubURL(response);
 
         this.toggleLoading();
 
-        this.setItems(data["hydra:member"]);
-        this.setView(data["hydra:view"]);
+        this.setItems(data["member"]);
+        this.setView(data["view"]);
 
         if (hubUrl) {
           this.setHubUrl(hubUrl);

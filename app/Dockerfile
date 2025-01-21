@@ -25,9 +25,9 @@ COPY . ./
 
 FROM builder as dev
 
-ENV VITE_SERVER_PORT=3000
-
 EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME localhost
 
 CMD ["npm", "run", "dev"]
 

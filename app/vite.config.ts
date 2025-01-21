@@ -23,10 +23,10 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: true,
-      port: env.VITE_SERVER_PORT || 3000,
+      port: env.PORT || 3000,
       watch: {
         usePolling: true
-      }
+      },
     },
   };
 })
