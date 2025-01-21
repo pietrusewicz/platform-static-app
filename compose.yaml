@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     environment:
       PWA_UPSTREAM: pwa:3000
+      APP_UPSTREAM: app:3000
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
@@ -16,8 +17,16 @@ services:
       MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-https://${SERVER_NAME:-localhost}/.well-known/mercure}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      - type: volume
+        source: caddy_data
+        target: /data
+        volume: {}
+      - type: volume
+        source: caddy_config
+        target: /config
+        volume: {}  
+    # - caddy_data:/data
+    # - caddy_config:/config
     ports:
       # HTTP
       - target: 80
@@ -32,10 +41,15 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
 
-  pwa:
-    image: ${IMAGES_PREFIX:-}app-pwa
+  # pwa:
+  #   image: ${IMAGES_PREFIX:-}app-pwa
+  #   environment:
+  #     NEXT_PUBLIC_ENTRYPOINT: http://php
+  
+  app:
+    image: ${IMAGES_PREFIX:-}app-app
     environment:
-      NEXT_PUBLIC_ENTRYPOINT: http://php
+      PUBLIC_ENTRYPOINT: http://php
 
 ###> doctrine/doctrine-bundle ###
   database:

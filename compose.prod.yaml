@@ -9,10 +9,21 @@ services:
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
 
-  pwa:
+  # pwa:
+  #   build:
+  #     context: ./pwa
+  #     target: prod
+  
+  app:
     build:
-      context: ./pwa
+      context: ./app
       target: prod
+    volumes:
+      - ./docker/templates:/etc/nginx/templates
+    # ports:
+    #   - "3000:80"
+    environment:
+      - NGINX_PORT=80 
 
   database:
     environment:

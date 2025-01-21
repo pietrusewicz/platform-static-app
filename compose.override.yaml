@@ -16,22 +16,43 @@ services:
       MERCURE_EXTRA_DIRECTIVES: demo
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
-    extra_hosts:
+    #extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
-      - host.docker.internal:host-gateway
+      # - host.docker.internal:host-gateway
     tty: true
 
-  pwa:
+  # pwa:
+  #   build:
+  #     context: ./pwa
+  #     target: dev
+  #   volumes:
+  #     - ./pwa:/srv/app
+  #   environment:
+  #     API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
+  #     API_PLATFORM_CREATE_CLIENT_OUTPUT: .
+  #     # On Linux, you may want to comment the following line for improved performance
+  #     WATCHPACK_POLLING: "true"
+
+  app:
     build:
-      context: ./pwa
+      context: ./app
       target: dev
-    volumes:
-      - ./pwa:/srv/app
-    environment:
-      API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
-      API_PLATFORM_CREATE_CLIENT_OUTPUT: .
-      # On Linux, you may want to comment the following line for improved performance
-      WATCHPACK_POLLING: "true"
+    #volumes:
+    #  - ./app:/usr/src/app
+    # environment:
+    #   WATCHPACK_POLLING: "true"    
+    #   VITE_SERVER_PORT: 3000
+    ports:
+       - mode: ingress
+         target: 3000
+         published: "3050"
+         protocol: tcp 
+    volumes:    
+      - type: bind
+        source: ./app/src
+        target: /usr/src/app/src
+        bind:
+          create_host_path: true     
 
 ###> doctrine/doctrine-bundle ###
   database:

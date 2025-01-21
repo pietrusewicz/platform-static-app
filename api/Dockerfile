@@ -45,9 +45,10 @@ RUN set -eux; \
 ###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
-COPY --link frankenphp/conf.d/app.ini $PHP_INI_DIR/conf.d/
-COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY --link frankenphp/Caddyfile /etc/caddy/Caddyfile
+# -- link option is not working with podman, so I need to remove that from here 
+COPY frankenphp/conf.d/app.ini $PHP_INI_DIR/conf.d/
+COPY --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY frankenphp/Caddyfile /etc/caddy/Caddyfile
 
 ENTRYPOINT ["docker-entrypoint"]
 
@@ -66,8 +67,8 @@ RUN set -eux; \
 	install-php-extensions \
 		xdebug \
 	;
-
-COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
+# -- link option is not working with podman, so I need to remove that from here 
+COPY frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
 
 CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--watch" ]
 
@@ -79,16 +80,19 @@ ENV FRANKENPHP_CONFIG="import worker.Caddyfile"
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY --link frankenphp/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
-COPY --link frankenphp/worker.Caddyfile /etc/caddy/worker.Caddyfile
+# -- link option is not working with podman, so I need to remove that from here 
+COPY frankenphp/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
+COPY frankenphp/worker.Caddyfile /etc/caddy/worker.Caddyfile
 
 # prevent the reinstallation of vendors at every changes in the source code
-COPY --link composer.* symfony.* ./
+# -- link option is not working with podman, so I need to remove that from here 
+COPY composer.* symfony.* ./
 RUN set -eux; \
 	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
 
 # copy sources
-COPY --link . ./
+# -- link option is not working with podman, so I need to remove that from here 
+COPY . ./
 RUN rm -Rf frankenphp/
 
 RUN set -eux; \
