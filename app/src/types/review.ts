@@ -7,5 +7,4 @@ export interface Review extends Item {
   body?: string;
   rating?: number;
   letter?: string;
-  null;
 }

@@ -4,6 +4,7 @@ import { SubmissionError } from "./error";
 import { ENTRYPOINT } from "./config";
 
 const MIME_TYPE = "application/ld+json";
+// const MIME_TYPE = "application/json";
 
 export default async function (id: string, options: any = {}) {
   if (typeof options.headers === "undefined") {
