@@ -1,6 +1,6 @@
-#syntax=docker/dockerfile:1
+#syntax=docker/dockerfile:1.4
 # Versions
-FROM node:20-alpine AS builder
+FROM node:21-alpine AS builder
 
 # automatically creates the dir and sets it as the current working dir
 WORKDIR /usr/src/app

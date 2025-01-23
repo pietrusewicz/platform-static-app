@@ -1,8 +1,8 @@
-#syntax=docker/dockerfile:1
+#syntax=docker/dockerfile:1.4
 
 
 # Versions
-FROM node:20-alpine AS node_upstream
+FROM node:21-alpine AS node_upstream
 
 
 # Base stage for dev and build
@@ -36,10 +36,12 @@ CMD ["sh", "-c", "pnpm install; pnpm dev"]
 
 FROM base AS builder
 
-COPY --link pnpm-lock.yaml ./
+# -- link option is not working with podman, so I need to remove that from here 
+COPY pnpm-lock.yaml ./
 RUN pnpm fetch --prod
 
-COPY --link . .
+# -- link option is not working with podman, so I need to remove that from here 
+COPY . .
 
 RUN	pnpm install --frozen-lockfile --offline --prod && \
 	pnpm run build
@@ -65,8 +67,9 @@ RUN mkdir .next; \
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --link --chown=1001:1001 /srv/app/.next/standalone ./
-COPY --from=builder --link --chown=1001:1001 /srv/app/.next/static ./.next/static
+# -- link option is not working with podman, so I need to remove that from here 
+COPY --from=builder --chown=1001:1001 /srv/app/.next/standalone ./
+COPY --from=builder --chown=1001:1001 /srv/app/.next/static ./.next/static
 
 USER nextjs
 

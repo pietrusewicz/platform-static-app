@@ -18,20 +18,25 @@ services:
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
     #extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
-      # - host.docker.internal:host-gateway
+    #  - host.docker.internal:host-gateway
     tty: true
 
-  # pwa:
-  #   build:
-  #     context: ./pwa
-  #     target: dev
-  #   volumes:
-  #     - ./pwa:/srv/app
-  #   environment:
-  #     API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
-  #     API_PLATFORM_CREATE_CLIENT_OUTPUT: .
-  #     # On Linux, you may want to comment the following line for improved performance
-  #     WATCHPACK_POLLING: "true"
+  pwa:
+    build:
+      context: ./pwa
+      target: dev
+    volumes:
+      - ./pwa:/srv/app  
+    environment:
+      API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
+      API_PLATFORM_CREATE_CLIENT_OUTPUT: .
+      # On Linux, you may want to comment the following line for improved performance
+      WATCHPACK_POLLING: "true"
+    ports:
+       - mode: ingress
+         target: 3000
+         published: "3060"
+         protocol: tcp   
 
   app:
     build:
