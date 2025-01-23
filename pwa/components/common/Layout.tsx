@@ -1,25 +1,12 @@
-import { ReactNode, useState } from "react";
-import {
-  DehydratedState,
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
+import {type ReactNode} from "react";
 
-const Layout = ({
-  children,
-  dehydratedState,
-}: {
-  children: ReactNode;
-  dehydratedState: DehydratedState;
-}) => {
-  const [queryClient] = useState(() => new QueryClient());
+import {Header} from "./Header";
 
+export const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={dehydratedState}>{children}</Hydrate>
-    </QueryClientProvider>
+      <>
+        <Header/>
+        {children}
+      </>
   );
 };
-
-export default Layout;

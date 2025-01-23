@@ -1,9 +1,11 @@
 import type { Item } from "./item";
 
 export interface Book extends Item {
-  book?: string;
-  condition?: string;
+  book?: any;
   title?: string;
   author?: string;
-  rating?: number;
+  null;
+  condition?: string;
+  rating?: integer;
+  null;
 }

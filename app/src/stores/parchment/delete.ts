@@ -1,0 +1,57 @@
+import { defineStore } from "pinia";
+import api from "@/utils/api";
+import type { Parchment } from "@/types/parchment";
+import type { DeleteState } from "@/types/stores";
+
+interface State extends DeleteState<Parchment> {}
+
+export const useParchmentDeleteStore = defineStore("parchmentDelete", {
+  state: (): State => ({
+    deleted: undefined,
+    mercureDeleted: undefined,
+    isLoading: false,
+    error: undefined,
+  }),
+
+  actions: {
+    async deleteItem(item: Parchment) {
+      this.setError("");
+      this.toggleLoading();
+
+      if (!item?.["@id"]) {
+        this.setError("No parchment found. Please reload");
+        return;
+      }
+
+      try {
+        await api(item["@id"], { method: "DELETE" });
+
+        this.toggleLoading();
+        this.setDeleted(item);
+        this.setMercureDeleted(undefined);
+      } catch (error) {
+        this.toggleLoading();
+
+        if (error instanceof Error) {
+          this.setError(error.message);
+        }
+      }
+    },
+
+    toggleLoading() {
+      this.isLoading = !this.isLoading;
+    },
+
+    setDeleted(deleted: Parchment) {
+      this.deleted = deleted;
+    },
+
+    setMercureDeleted(mercureDeleted: Parchment | undefined) {
+      this.mercureDeleted = mercureDeleted;
+    },
+
+    setError(error: string) {
+      this.error = error;
+    },
+  },
+});

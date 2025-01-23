@@ -21,7 +21,7 @@ export const useBookCreateStore = defineStore("bookCreate", {
       this.toggleLoading();
 
       try {
-        const response = await api("admin/books", {
+        const response = await api("books", {
           method: "POST",
           body: JSON.stringify(payload),
         });

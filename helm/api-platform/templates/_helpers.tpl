@@ -73,6 +73,15 @@ app.kubernetes.io/part-of: {{ include "api-platform.name" . }}
 {{- end }}
 
 {{/*
+Selector labels Fixtures
+*/}}
+{{- define "api-platform.selectorLabelsFixtures" -}}
+app.kubernetes.io/name: {{ include "api-platform.name" . }}-fixtures
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/part-of: {{ include "api-platform.name" . }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "api-platform.serviceAccountName" -}}

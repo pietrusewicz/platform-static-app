@@ -5,7 +5,8 @@ import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
-import Card from './common/Card.vue'
+
+const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 </script>
 
 <template>
@@ -24,19 +25,26 @@ import Card from './common/Card.vue'
     <template #icon>
       <ToolingIcon />
     </template>
-    <template #heading>Available Services</template>
+    <template #heading>Tooling</template>
 
-    <div className="text-center | lg:text-left lg:w-3/5 lg:ml-auto">
-      <div className="flex justify-center flex-wrap | lg:justify-start lg:grid lg:gap-5 lg:grid-cols-2">
-        <Card image={apiPicture} title="API" url="/docs" />
-        <Card image={adminPicture} title="Admin" url="/admin" />
-        <Card
-          image={mercurePicture}
-          title="Mercure debugger"
-          url="/.well-known/mercure/ui/"
-        />
-      </div>
-    </div>
+    This project is served and bundled with
+    <a href="https://vite.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
+    recommended IDE setup is
+    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a>
+    +
+    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
+    you need to test your components and web pages, check out
+    <a href="https://vitest.dev/" target="_blank" rel="noopener">Vite</a>
+    and
+    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a>
+    /
+    <a href="https://playwright.dev/" target="_blank" rel="noopener">Playwright</a>.
+
+    <br />
+
+    More instructions are available in
+    <a href="javascript:void(0)" @click="openReadmeInEditor"><code>README.md</code></a
+    >.
   </WelcomeItem>
 
   <WelcomeItem>

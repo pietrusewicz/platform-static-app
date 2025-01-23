@@ -40,8 +40,6 @@ spec:
               value: :80
             - name: PWA_UPSTREAM
               value: {{ include "api-platform.fullname" . }}-pwa:3000
-            - name: APP_UPSTREAM
-              value: {{ include "api-platform.fullname" . }}-app:3000  
             - name: MERCURE_PUBLISHER_JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -52,6 +50,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: mercure-jwt-secret
+            - name: OIDC_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: oidc-server-url
+            - name: OIDC_SERVER_URL_INTERNAL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: oidc-server-url-internal
             - name: TRUSTED_HOSTS
               valueFrom:
                 configMapKeyRef:
@@ -126,15 +134,15 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
           livenessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.php.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

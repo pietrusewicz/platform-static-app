@@ -12,10 +12,6 @@ build:
       context: ../pwa
       docker:
         target: prod
-    - image: api-platform-app
-      context: ../app
-      docker:
-        target: prod    
 
 deploy:
   kubeContext: minikube
@@ -29,7 +25,5 @@ deploy:
         php.image.tag: "{{.IMAGE_TAG_api_platform_php}}@{{.IMAGE_DIGEST_api_platform_php}}"
         pwa.image.repository: "{{.IMAGE_REPO_api_platform_pwa}}"
         pwa.image.tag: "{{.IMAGE_TAG_api_platform_pwa}}@{{.IMAGE_DIGEST_api_platform_pwa}}"
-        app.image.repository: "{{.IMAGE_REPO_api_platform_app}}"
-        app.image.tag: "{{.IMAGE_TAG_api_platform_app}}@{{.IMAGE_DIGEST_api_platform_app}}"
       valuesFiles:
         - skaffold-values.yaml

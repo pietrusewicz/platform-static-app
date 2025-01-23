@@ -27,31 +27,6 @@
     </div>
     <div class="mb-2">
       <label
-        for="book_condition"
-        class="text-gray-700 block text-sm font-bold capitalize"
-      >
-        condition
-      </label>
-      <input
-        id="book_condition"
-        v-model="item.condition"
-        :class="[
-          'mt-1 w-full px-3 py-2 border rounded',
-          violations?.condition ? 'border-red-500' : 'border-gray-300',
-        ]"
-        type="text"
-        required
-        placeholder=""
-      />
-      <div
-        v-if="violations?.condition"
-        class="bg-red-100 rounded py-4 px-4 my-2 text-red-700 text-sm"
-      >
-        {{ violations.condition }}
-      </div>
-    </div>
-    <div class="mb-2">
-      <label
         for="book_title"
         class="text-gray-700 block text-sm font-bold capitalize"
       >
@@ -100,6 +75,31 @@
     </div>
     <div class="mb-2">
       <label
+        for="book_condition"
+        class="text-gray-700 block text-sm font-bold capitalize"
+      >
+        condition
+      </label>
+      <input
+        id="book_condition"
+        v-model="item.condition"
+        :class="[
+          'mt-1 w-full px-3 py-2 border rounded',
+          violations?.condition ? 'border-red-500' : 'border-gray-300',
+        ]"
+        type="text"
+        required
+        placeholder=""
+      />
+      <div
+        v-if="violations?.condition"
+        class="bg-red-100 rounded py-4 px-4 my-2 text-red-700 text-sm"
+      >
+        {{ violations.condition }}
+      </div>
+    </div>
+    <div class="mb-2">
+      <label
         for="book_rating"
         class="text-gray-700 block text-sm font-bold capitalize"
       >
@@ -112,7 +112,7 @@
           'mt-1 w-full px-3 py-2 border rounded',
           violations?.rating ? 'border-red-500' : 'border-gray-300',
         ]"
-        type="number"
+        type="text"
         placeholder=""
       />
       <div

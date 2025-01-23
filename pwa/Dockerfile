@@ -2,7 +2,7 @@
 
 
 # Versions
-FROM node:21-alpine AS node_upstream
+FROM node:22-alpine AS node_upstream
 
 
 # Base stage for dev and build
@@ -43,6 +43,10 @@ RUN pnpm fetch --prod
 # -- link option is not working with podman, so I need to remove that from here 
 COPY . .
 
+ARG AUTH_SECRET
+# https://nextjs.org/docs/app/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser
+ARG NEXT_PUBLIC_OIDC_SERVER_URL
+
 RUN	pnpm install --frozen-lockfile --offline --prod && \
 	pnpm run build
 
@@ -59,7 +63,8 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs; \
 	adduser --system --uid 1001 nextjs
 
-COPY --from=builder --link /srv/app/public ./public
+# -- link option is not working with podman, so I need to remove that from here 
+COPY --from=builder /srv/app/public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next; \

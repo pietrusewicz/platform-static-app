@@ -57,17 +57,17 @@
             <th
               class="text-sm font-medium px-6 py-4 text-left capitalize"
             >
-            condition
-            </th>
-            <th
-              class="text-sm font-medium px-6 py-4 text-left capitalize"
-            >
             title
             </th>
             <th
               class="text-sm font-medium px-6 py-4 text-left capitalize"
             >
             author
+            </th>
+            <th
+              class="text-sm font-medium px-6 py-4 text-left capitalize"
+            >
+            condition
             </th>
             <th
               class="text-sm font-medium px-6 py-4 text-left capitalize"
@@ -94,16 +94,26 @@
               </router-link>
             </td>
             <td class="px-6 py-4 text-sm">
-            {{ item.book }}
-                        </td>
-            <td class="px-6 py-4 text-sm">
-            {{ item.condition }}
-                        </td>
+            <router-link
+              v-if="router.hasRoute('BookShow')"
+              :to="{ name: 'BookShow', params: { id: item.book } }"
+                class="text-blue-600 hover:text-blue-800"
+            >
+              {{ item.book }}
+            </router-link>
+
+            <p v-else>
+              {{ item.book }}
+            </p>
+            </td>
             <td class="px-6 py-4 text-sm">
             {{ item.title }}
                         </td>
             <td class="px-6 py-4 text-sm">
             {{ item.author }}
+                        </td>
+            <td class="px-6 py-4 text-sm">
+            {{ item.condition }}
                         </td>
             <td class="px-6 py-4 text-sm">
             {{ item.rating }}
@@ -209,12 +219,14 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useBookDeleteStore } from "@/stores/book/delete";
 import { useBookListStore } from "@/stores/book/list";
 import { useMercureList } from "@/composables/mercureList";
 
 const route = useRoute();
+const router = useRouter();
 
 const bookDeleteStore = useBookDeleteStore();
 const { deleted: deletedItem, mercureDeleted: mercureDeletedItem } =

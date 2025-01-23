@@ -16,7 +16,7 @@ services:
       MERCURE_EXTRA_DIRECTIVES: demo
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
-    #extra_hosts:
+    # extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
     #  - host.docker.internal:host-gateway
     tty: true
@@ -26,17 +26,20 @@ services:
       context: ./pwa
       target: dev
     volumes:
-      - ./pwa:/srv/app  
+      - ./pwa:/srv/app
     environment:
       API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://php
       API_PLATFORM_CREATE_CLIENT_OUTPUT: .
       # On Linux, you may want to comment the following line for improved performance
       WATCHPACK_POLLING: "true"
-    ports:
-       - mode: ingress
-         target: 3000
-         published: "3060"
-         protocol: tcp   
+      # Development usage only
+      NODE_TLS_REJECT_UNAUTHORIZED: "0"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000 || exit 1" ]
+      start_period: 15s
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   app:
     build:
@@ -69,3 +72,24 @@ services:
 
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+  keycloak:
+    build:
+      context: ./helm/api-platform/keycloak/
+      target: keycloak
+    volumes:
+      - ./helm/api-platform/keycloak/themes/api-platform-demo:/opt/bitnami/keycloak/themes/api-platform-demo
+
+  keycloak-config-cli:
+    image: bitnami/keycloak-config-cli:5-debian-12
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080/oidc/
+      KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USER:-admin}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-!ChangeMe!}
+      KEYCLOAK_AVAILABILITYCHECK_ENABLED: "true"
+      KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: 120s
+      IMPORT_FILES_LOCATIONS: "/config/*"
+    volumes:
+      - ./helm/api-platform/keycloak/config:/config

@@ -64,19 +64,18 @@
               book
             </th>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
-            {{ item.book }}
-                        </td>
-          </tr>
-          <tr class="border-b">
-            <th
-              class="text-sm font-medium px-6 py-4 text-left capitalize"
-              scope="row"
+            <router-link
+              v-if="router.hasRoute('BookShow')"
+              :to="{ name: 'BookShow', params: { id: item.book } }"
+              class="text-blue-600 hover:text-blue-800"
             >
-              condition
-            </th>
-            <td class="px-6 py-4 whitespace-nowrap text-sm">
-            {{ item.condition }}
-                        </td>
+              {{ item.book }}
+            </router-link>
+
+            <p v-else>
+              {{ item.book }}
+            </p>
+            </td>
           </tr>
           <tr class="border-b">
             <th
@@ -98,6 +97,17 @@
             </th>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
             {{ item.author }}
+                        </td>
+          </tr>
+          <tr class="border-b">
+            <th
+              class="text-sm font-medium px-6 py-4 text-left capitalize"
+              scope="row"
+            >
+              condition
+            </th>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+            {{ item.condition }}
                         </td>
           </tr>
           <tr class="border-b">
