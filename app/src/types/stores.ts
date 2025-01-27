@@ -38,3 +38,10 @@ export interface UpdateState<T> {
   hubUrl?: URL;
   violations?: SubmissionErrors;
 }
+
+export interface AuthState<T> {
+  isLoading: boolean;
+  error?: string;
+  authenticated: boolean;
+  user: T;
+}

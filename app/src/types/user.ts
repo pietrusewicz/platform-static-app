@@ -5,3 +5,8 @@ export interface User extends Item {
   lastName?: string;
   name?: string;
 }
+
+export interface AuthUser extends User {
+  token?: string;
+  username?: string;
+}

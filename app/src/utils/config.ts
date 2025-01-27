@@ -1,2 +1,2 @@
 // export const ENTRYPOINT = "https://php/docs.jsonopenapi";
-export const ENTRYPOINT = typeof window === "undefined" ? process.env.API_PUBLIC_ENTRYPOINT : window.origin;
+export const ENTRYPOINT = typeof window === "undefined" ? import.meta.env.VITE_PUBLIC_ENTRYPOINT : window.origin;

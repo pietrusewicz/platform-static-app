@@ -53,7 +53,15 @@ services:
   app:
     image: ${IMAGES_PREFIX:-}app-app
     environment:
-      API_PUBLIC_ENTRYPOINT: http://php
+      VITE_PUBLIC_ENTRYPOINT: http://php
+      VITE_PUBLIC_OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-api-platform-pwa}
+      VITE_PUBLIC_OIDC_SERVER_URL: ${OIDC_SERVER_URL:-https://localhost/oidc/}
+      VITE_PUBLIC_OIDC_SERVER_URL_INTERNAL: ${OIDC_SERVER_URL_INTERNAL:-http://keycloak:8080/oidc/}
+      VITE_PUBLIC_OIDC_AUTHORIZATION_CLIENT_ID: ${OIDC_AUTHORIZATION_CLIENT_ID:-api-platform-api}
+      VITE_PUBLIC_OIDC_REALM: ${OIDC_SERVER_REALM:-demo}
+      AUTH_SECRET: ${AUTH_SECRET:-!ChangeThisNextAuthSecret!}
+      AUTH_URL: ${AUTH_URL:-https://localhost/api/auth}
+      VITE_SHARP_PATH: /srv/app/node_modules/sharp
 
 ###> doctrine/doctrine-bundle ###
   database:
